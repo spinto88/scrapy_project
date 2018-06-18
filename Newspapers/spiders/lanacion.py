@@ -4,8 +4,8 @@ import scrapy
 import datetime
 from Newspapers.items import NewspapersItem
 
-init_date = "2018-01-01"
-final_date = "2018-06-11"
+init_date = "2018-06-11"
+final_date = "2018-06-15"
 
 init_date = datetime.datetime.strptime(init_date, "%Y-%m-%d").date()
 final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()
@@ -19,8 +19,8 @@ name2month = {'enero': 1, 'febrero': 2, 'marzo': 3,\
 # Ids de las notas tentativas: dentro de esta ventana solo se queda con las notas cuya fecha esta dentro dentro del intervalo de tiempo indicado
 # Ver en la pagina...
 
-init_id = 2090000
-final_id = 2143146
+init_id = 2142786
+final_id = 2153520
 
 class LaNacionSpider(scrapy.Spider):
     name = "lanacion"
@@ -39,6 +39,8 @@ class LaNacionSpider(scrapy.Spider):
 
         try:
             date = response.selector.xpath('//section[@class = "fecha"]//text()')[0].extract()	
+            time = response.selector.xpath('//section[@class = "fecha"]//text()')[1].extract()	
+
             date = date.split()
             date = "{}-{}-{}".format(date[4], name2month[date[2]], date[0]) 
             date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
@@ -46,15 +48,17 @@ class LaNacionSpider(scrapy.Spider):
                 return None
             else:
                 pass
+
+            time = time.split()[1]
             
         except:
-            date = ''
-            time = ''
+            date = None
+            time = None
 
         try:
             title = response.selector.xpath('//article//*[@class = "titulo"]//text()')[0].extract()
         except:
-            title = ''
+            title = None
 
         try:
             body = response.selector.xpath('//section[@id = "cuerpo"]//p//text()').extract()
@@ -63,7 +67,7 @@ class LaNacionSpider(scrapy.Spider):
             body = body.replace('\n', '')
 
         except:
-            body = ''
+            body = None
 
         try:
             section = response.selector.xpath('//*[@class = "categoria"]//a//text()')[0].extract()
@@ -71,7 +75,7 @@ class LaNacionSpider(scrapy.Spider):
             section = section.replace('\r', '')
             section = section.replace('\n', '')
         except:
-            section = ''
+            section = None
 
         try:
             tag = response.selector.xpath('//*[@class = "tag"]//a//text()')[0].extract()
@@ -79,12 +83,12 @@ class LaNacionSpider(scrapy.Spider):
             tag = tag.replace('\r', '')
             tag = tag.replace('\n', '')
         except:
-            tag = ''
+            tag = None
 
         try:
             author = response.selector.xpath('//section[@class = "autor"]//a//text()')[0].extract()
         except:
-            author = ''
+            author = None
 
         item = NewspapersItem()
         item['title'] = title
@@ -95,8 +99,8 @@ class LaNacionSpider(scrapy.Spider):
         item['section'] = section
         item['tag'] = tag
         item['body'] = body
+        item['time'] = time
 
-        item['time'] = None
         item['subtitle'] = None
         item['prefix'] = None
 

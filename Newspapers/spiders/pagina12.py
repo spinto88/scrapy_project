@@ -16,7 +16,6 @@ final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()
 init_id = 80946
 final_id = 120945
 
-
 class Pagina12Spider(scrapy.Spider):
     name = "pagina12"
 
@@ -73,7 +72,7 @@ class Pagina12Spider(scrapy.Spider):
             section = ''
 
         try:
-            author = response.selector.xpath('//div[@class = "article-author"]//a/text()').extract()
+            author = response.selector.xpath('//div[@class = "article-author"]//a/text()')[0].extract()
             author = ' '.join(author)
         except:
             author = ''
