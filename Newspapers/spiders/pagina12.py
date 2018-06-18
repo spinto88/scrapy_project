@@ -4,8 +4,8 @@ import scrapy
 import datetime
 from Newspapers.items import NewspapersItem
 
-init_date = "2018-01-01"
-final_date = "2018-06-11"
+init_date = "2018-06-11"
+final_date = "2018-06-18"
 
 init_date = datetime.datetime.strptime(init_date, "%Y-%m-%d").date()
 final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()
@@ -13,8 +13,8 @@ final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()
 # Ids de las notas tentativas: dentro de esta ventana solo se queda con las notas cuya fecha esta dentro dentro del intervalo de tiempo indicado
 # Ver en la pagina...
 
-init_id = 80946
-final_id = 120945
+init_id = 120008
+final_id = 122508
 
 class Pagina12Spider(scrapy.Spider):
     name = "pagina12"

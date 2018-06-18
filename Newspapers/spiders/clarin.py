@@ -3,8 +3,8 @@ import scrapy
 import datetime
 from Newspapers.items import NewspapersItem
 
-init_date = "2018-01-01"
-final_date = "2018-06-11"
+init_date = "2018-06-11"
+final_date = "2018-06-18"
 
 init_date = datetime.datetime.strptime(init_date, "%Y-%m-%d").date()
 final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()

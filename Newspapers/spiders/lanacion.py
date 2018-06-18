@@ -4,8 +4,8 @@ import scrapy
 import datetime
 from Newspapers.items import NewspapersItem
 
-init_date = "2018-06-11"
-final_date = "2018-06-15"
+init_date = "2018-01-01"
+final_date = "2018-06-18"
 
 init_date = datetime.datetime.strptime(init_date, "%Y-%m-%d").date()
 final_date = datetime.datetime.strptime(final_date, "%Y-%m-%d").date()
@@ -20,7 +20,7 @@ name2month = {'enero': 1, 'febrero': 2, 'marzo': 3,\
 # Ver en la pagina...
 
 init_id = 2142786
-final_id = 2153520
+final_id = 2145048
 
 class LaNacionSpider(scrapy.Spider):
     name = "lanacion"
@@ -39,7 +39,6 @@ class LaNacionSpider(scrapy.Spider):
 
         try:
             date = response.selector.xpath('//section[@class = "fecha"]//text()')[0].extract()	
-            time = response.selector.xpath('//section[@class = "fecha"]//text()')[1].extract()	
 
             date = date.split()
             date = "{}-{}-{}".format(date[4], name2month[date[2]], date[0]) 
@@ -48,11 +47,15 @@ class LaNacionSpider(scrapy.Spider):
                 return None
             else:
                 pass
+          
+        except:
+            date = None
 
+        try:
+            time = response.selector.xpath('//section[@class = "fecha"]//text()')[1].extract()	
             time = time.split()[1]
             
         except:
-            date = None
             time = None
 
         try:
